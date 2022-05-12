@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Dandelion</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<header>
+    <form>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light box-shadow mb-3 w-100" style="background: linear-gradient(to right, #203740, #203740); ">
+            <button type="submit" style="background: #40736E; color: snow; font-weight: bold;" class="btn mr-3" asp-controller="Home" asp-route-login="@ViewData["UserLogin"]" asp-action="Index" formmethod="post">Home</button>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end w-100">
+                @if (ViewData["UserLogin"] == null)
+                {
+                    <button type="submit" style="background: #40736E; color: snow; font-weight: bold; " class="btn mr-3" asp-controller="Home" asp-action="LogIn">Log In</button>
+                    <button type="submit" style="background: #40736E; color: snow; font-weight: bold; " class="btn" asp-controller="Home" asp-action="SignUp">Sign Up</button>
+                }
+                else
+                {
+                    <button type="submit" style="background: #40736E; color: snow; font-weight: bold;" class="btn mr-3" asp-controller="Home" asp-action="Profile" asp-route-login="@ViewData["UserLogin"]" formmethod="post">Hello @ViewData["UserName"]!</button>
+                    @if (Convert.ToString(ViewData["UserStatus"]) == "Admin")
+                    {
+                        <button type="submit" style="background: #40736E; color: snow; font-weight: bold;" class="btn mr-3" asp-controller="Home" asp-action="AccountManager" asp-route-login="@ViewData["UserLogin"]" formmethod="post">Account manager</button>
+                    }
+                    <button type="submit" style="background: #40736E; color: snow; font-weight: bold;" class="btn" asp-controller="Home" asp-action="LogOut">Log Out</button>
+                }
+            </div>
+        </nav>
+
+    </form>
+</header>
+<body style="background: linear-gradient(to right, #7997F2, #A6728A); ">
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <footer class="border-top footer text-muted">
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

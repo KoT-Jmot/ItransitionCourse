@@ -1,0 +1,75 @@
+﻿@using Dandelion.Data
+<form class="w-100 text-xs-center" enctype="multipart/form-data">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div style="background-color: #203740; font-size: 18px; color: snow;" class="mt-2 mb-3 font-weight-bolder text-center">Last items</div>
+                @if (ViewData["Item"] as List<Item> != null)
+                    @foreach (var a in ViewData["Item"] as List<Item>)
+                    {
+                        <div class="card ml-auto mb-2" style="width: 18rem; background: linear-gradient(to right, #082040, #40736E); cursor: pointer; display: flex; ">
+                            <button type="submit" style="border: 0px; background: transparent; outline: none;" class="w-100 h-100 p-0" asp-controller="Home" asp-action="ItemInfo" asp-route-a="@a.Id" asp-route-login="@ViewData["UserLogin"]" formmethod="post">
+
+                                @{
+                                    string imgSrc = null;
+                                    if (a.Pic != null)
+                                    {
+                                        var base64 = Convert.ToBase64String(a.Pic);
+                                        imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
+                                    }
+                                }
+                                @if (imgSrc != null)
+                                {
+                                    <img class="h-100 w-100" src="@imgSrc" />
+                                }
+                                else
+                                {
+                                    <img class="h-100 w-100" src="~/Images/none.jpg" />
+                                }
+                                <div class="card-body p-1">
+                                    <p class="card-text" style="color: #F2EFEB; font-size: 20px;">@a.Name</p>
+                                </div>
+                            </button>
+                        </div>
+
+                    }
+            </div>
+            <div class="col-6">
+                <div style="background-color: #203740; font-size: 18px; color: snow;" class="mt-2 mb-3 font-weight-bolder text-center">Best collection</div>
+                @if (ViewData["Collect"] as List<Collection> != null)
+                    @foreach (var a in ViewData["Collect"] as List<Collection>)
+                    {
+                        <button type="submit" style="background: transparent; outline: none; cursor: pointer; border:0px;" class="w-100 p-0 mx-auto mb-2" asp-controller="Home" asp-action="Items" asp-route-a="@a.Id" asp-route-login="@ViewData["UserLogin"]" formmethod="post">
+                            <div class="row w-100 p-0 mx-auto" style="background: linear-gradient(to right, #082040, #40736E); font-size: 16px; border-radius: 5px;">
+                                @{
+                                    string imgSrc = null;
+                                    if (a.Pic != null)
+                                    {
+                                        var base64 = Convert.ToBase64String(a.Pic);
+                                        imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
+                                    }
+                                }
+                                <div class="col-sm-4 m-0 p-0">
+                                    @if (imgSrc != null)
+                                    {
+                                        <img style="border-radius: 5px;" class="w-100 h-100" src="@imgSrc" alt="No Photo" />
+                                    }
+                                    else
+                                    {
+                                        <img style="border-radius: 5px;" class="w-100 h-100" src="~/Images/none.jpg" />
+                                    }
+                                </div>
+                                <div class="col-sm-8" style="text-align:left;">
+                                    <p class="font-weight-bold" style="font-size: 20px; color: snow;">@a.Name</p>
+                                    <p style="overflow-wrap: break-word; width: 100%; color: snow;">@a.Description</p> <div class="text-right mt-auto" style="color: #80F2E7; ">#@a.Tag</div>
+                                </div>
+                            </div>
+                        </button>
+                    }
+            </div>
+            <div class="col">
+                <div style="background-color: #203740; font-size: 18px; color: snow;" class="mt-2 mb-3 font-weight-bolder text-center">tags</div>
+            </div>
+        </div>
+    </div>
+</form>

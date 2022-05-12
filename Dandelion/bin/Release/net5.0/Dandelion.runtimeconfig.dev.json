@@ -1,0 +1,9 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\vanja\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\vanja\\.nuget\\packages",
+      "D:\\Launchers\\Visual Studio\\Shared\\NuGetPackages"
+    ]
+  }
+}

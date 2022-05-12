@@ -1,0 +1,22 @@
+﻿@using Dandelion.Data
+@model User
+@{}
+<form class="m-auto w-25 text-xs-center pt-md-5">
+    <div class="form-floating mb-3">
+        <input type="text" asp-for="Login" maxlength="50" class="form-control text-center" placeholder="Login" style="background: #0F2859; color:snow; border: 0px; border-radius: 5px;">
+    </div>
+    <div class="form-floating">
+        <input type="password" asp-for="Password" maxlength="50" class="form-control text-center" placeholder="Password" style="background: #0F2859; color:snow; border: 0px; border-radius: 5px;">
+    </div>
+    <div asp-validation-summary="All" class="" style="color:snow"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <button type="submit" style="background: #40736E; color: snow; font-weight: bold;" class="btn w-100 m-auto" asp-controller="Home" asp-action="LogIn" formmethod="post">Сontinue</button>
+            </div>
+            <div class="col">
+                <button type="submit" style="background: #40736E; color: snow; font-weight: bold;" class="btn w-100 m-auto" asp-controller="Home" asp-action="Index">Cancel</button>
+            </div>
+        </div>
+    </div>
+</form>

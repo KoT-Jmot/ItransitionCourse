@@ -1,0 +1,125 @@
+﻿@using Dandelion.Data
+<form class="w-100 text-xs-center" enctype="multipart/form-data">
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                @if (ViewData["Item"] as Item != null)
+                {
+                    <div class="card mb-2 mx-auto" style="width: 30rem; background: linear-gradient(to right, #082040, #40736E);">
+                        @{
+                            string imgSrc = null;
+                            if ((ViewData["Item"] as Item).Pic != null)
+                            {
+                                var base64 = Convert.ToBase64String((ViewData["Item"] as Item).Pic);
+                                imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
+                            }
+                        }
+                        @if (imgSrc != null)
+                        {
+                            <img class="h-100 w-100" src="@imgSrc" />
+                        }
+                        else
+                        {
+                            <img class="h-100 w-100" src="~/Images/none.jpg" />
+                        }
+                        <div class="card-body p-1 text-left" style="font-size:24px;">
+                            <p class="card-text text-center" style="color: #F2EFEB; font-size: 44px;">@((ViewData["Item"] as Item).Name)</p>
+                            @if ((ViewData["Item"] as Item).Tegs != null)
+                            {
+                                <p class="card-text" style="color: #F2EFEB;">Tags: @((ViewData["Item"] as Item).Tegs)</p>
+                            }
+
+                            @if ((ViewData["Item"] as Item).Text1 != null)
+                            {
+                                <p class="card-text" style="color: #F2EFEB;">@((ViewData["Coll"] as Collection).Text1): @((ViewData["Item"] as Item).Text1)</p>
+                            }
+                            @if ((ViewData["Item"] as Item).Text2 != null)
+                            {
+                                <p class="card-text" style="color: #F2EFEB;">@((ViewData["Coll"] as Collection).Text2): @((ViewData["Item"] as Item).Text2)</p>
+                            }
+                            @if ((ViewData["Item"] as Item).Text3 != null)
+                            {
+                                <p class="card-text" style="color: #F2EFEB;">@((ViewData["Coll"] as Collection).Text3): @((ViewData["Item"] as Item).Text3)</p>
+                            }
+
+                            @if ((ViewData["Item"] as Item).Line1 != null)
+                            {
+                                <p class="card-text" style="color: #F2EFEB;">@((ViewData["Coll"] as Collection).Line1): @((ViewData["Item"] as Item).Line1)</p>
+                            }
+                            @if ((ViewData["Item"] as Item).Line2 != null)
+                            {
+                                <p class="card-text" style="color: #F2EFEB;">@((ViewData["Coll"] as Collection).Line2): @((ViewData["Item"] as Item).Line2)</p>
+                            }
+                            @if ((ViewData["Item"] as Item).Line3 != null)
+                            {
+                                <p class="card-text" style="color: #F2EFEB;">@((ViewData["Coll"] as Collection).Line3): @((ViewData["Item"] as Item).Line3)</p>
+                            }
+
+                            @if ((ViewData["Item"] as Item).Float1 != null)
+                            {
+                                <p class="card-text" style="color: #F2EFEB;">@((ViewData["Coll"] as Collection).Float1): @((ViewData["Item"] as Item).Float1)</p>
+                            }
+                            @if ((ViewData["Item"] as Item).Float2 != null)
+                            {
+                                <p class="card-text" style="color: #F2EFEB;">@((ViewData["Coll"] as Collection).Float2): @((ViewData["Item"] as Item).Float2)</p>
+                            }
+                            @if ((ViewData["Item"] as Item).Float3 != null)
+                            {
+                                <p class="card-text" style="color: #F2EFEB;">@((ViewData["Coll"] as Collection).Float3): @((ViewData["Item"] as Item).Float3)</p>
+                            }
+
+                            @if ((ViewData["Item"] as Item).Date1 != null)
+                            {
+                                <p class="card-text" style="color: #F2EFEB;">@((ViewData["Coll"] as Collection).Date1): @((ViewData["Item"] as Item).Date1)</p>
+                            }
+                            @if ((ViewData["Item"] as Item).Date2 != null)
+                            {
+                                <p class="card-text" style="color: #F2EFEB;">@((ViewData["Coll"] as Collection).Date2): @((ViewData["Item"] as Item).Date2)</p>
+                            }
+                            @if ((ViewData["Item"] as Item).Date3 != null)
+                            {
+                                <p class="card-text" style="color: #F2EFEB;">@((ViewData["Coll"] as Collection).Date3): @((ViewData["Item"] as Item).Date3)</p>
+                            }
+
+                            @if ((ViewData["Item"] as Item).Checkbox1 != null)
+                            {
+                                <p class="card-text" style="color: #F2EFEB;">@((ViewData["Coll"] as Collection).Checkbox1): 1</p>
+                            }
+                            @if ((ViewData["Item"] as Item).Checkbox2 != null)
+                            {
+                                <p class="card-text" style="color: #F2EFEB;">@((ViewData["Coll"] as Collection).Checkbox2): 2</p>
+                            }
+                            @if ((ViewData["Item"] as Item).Checkbox3 != null)
+                            {
+                                <p class="card-text" style="color: #F2EFEB;">@((ViewData["Coll"] as Collection).Checkbox3): 3</p>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col-4">
+                @if((ViewData["Comments"] as List<Comment>)!=null)
+                    @foreach (var a in (ViewData["Comments"] as List<Comment>))
+                    {
+                        {
+                            <div class="row table table-dark table-striped m-1" style="white-space: nowrap; border: 1px solid black; color: lightgray; border-radius: 5px; text-align: left;">
+                                    <div class="p-1" style="width: 60%; font-size: 14px; overflow: hidden; text-overflow: ellipsis;">От @a.Name</div>
+                                <div class="p-1" style="width: 100%; font-size: 16px;">@a.Text   </div>
+                            </div>
+                        }
+                    }
+                @if (ViewData["UserName"] != null)
+                {
+                    <div class="form-floating">
+                        <p style="color: black; font-weight:bold" name="CommentName">@ViewData["UserName"]</p>
+                    </div>
+                    <div class="form-floating">
+                        <textarea name="CommentText" class="form-control" placeholder="Text..." maxlength="300" style="background: #0F2859; color: snow; border: 0px; border-radius: 5px;"></textarea>
+                    </div>
+                    <button type="submit" style="background: #40736E; color: snow; font-weight: bold;" class="btn my-2 w-100" asp-controller="Home" asp-action="AddMessage" asp-route-CommentName="@ViewData["UserName"]" asp-route-ItemId="@((ViewData["Item"] as Item).Id)" asp-route-login="@ViewData["UserLogin"]" formmethod="post">Submit</button>
+                }
+            </div>
+        </div>
+    </div>
+    
+</form>

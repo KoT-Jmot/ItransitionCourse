@@ -1,0 +1,196 @@
+﻿@using Dandelion.Data
+@model Item
+<form class="w-100 text-xs-center" enctype="multipart/form-data">
+    <div class="row mb-2" style=" background: linear-gradient(to right, #082040, #40736E); font-size: 16px; border-radius: 15px;">
+        @{
+            string imgSrc = null;
+            if ((ViewData["Coll"] as Collection).Pic != null)
+            {
+                var base64 = Convert.ToBase64String((ViewData["Coll"] as Collection).Pic);
+                imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
+            }
+        }
+        <div class="col-sm-4 m-0 p-0">
+            @if (imgSrc != null)
+            {
+                <img style="width: 100%; border-radius: 15px 0 0 15px;" class="text-center m-2" src="@imgSrc" />
+            }
+            else
+            {
+                <img style="width: 100%; border-radius: 15px 0 0 15px;" class="text-center m-2" src="~/Images/none.jpg" />
+            }
+        </div>
+        <div class="col-sm-8">
+            <div class="w-100 h-100">
+                @if (Convert.ToString(ViewData["UserStatus"]) == "Admin" || (ViewData["Coll"] as Collection).Login == Convert.ToString(ViewData["UserLogin"]))
+                {
+                    <input class="font-weight-bold w-75 mb-2 mt-3" style="margin-left:12%; background: #0F2859; color: snow; border: 0px; border-radius: 5px; font-size: 30px;" value="@((ViewData["Coll"] as Collection).Name)" name="Names" maxlength="30">
+                    <textarea class="w-75 mb-2 h-50" style="margin-left: 12%; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" name="Description" maxlength="150">@((ViewData["Coll"] as Collection).Description)</textarea>
+                    <select class="form-select mb-2 w-75 text-center" style="margin-left: 12%; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" name="Tag">
+                        <option selected>@((ViewData["Coll"] as Collection).Tag)</option>
+                        <option>Other</option>
+                        <option value="Alcohol">Alcohol</option>
+                        <option value="Food">Food</option>
+                        <option value="Literature">Literature</option>
+                        <option value="Art">Art</option>
+                        <option value="Music">Music</option>
+                        <option value="Sport">Sport</option>
+                        <option value="Technics">Technics</option>
+                        <option value="Transport">Transport</option>
+                    </select>
+
+                }
+                else
+                {
+                    <p class="font-weight-bold w-75 mb-2 mt-3 mx-auto" style="background: #0F2859; color: snow; border: 0px; border-radius: 5px; font-size: 30px;" name="Names">@((ViewData["Coll"] as Collection).Name)</p>
+                    <p class="w-75 mb-2 h-50 mx-auto" style="background: #0F2859; color: snow; border: 0px; border-radius: 5px;" name="Description">@((ViewData["Coll"] as Collection).Description)</p>
+                    <p class="form-select mb-2 w-75 text-center mx-auto" style="background: #0F2859; color: snow; border: 0px; border-radius: 5px;" name="Tag">@((ViewData["Coll"] as Collection).Tag)</p>
+                }
+            </div>
+        </div>
+        @if (Convert.ToString(ViewData["UserStatus"]) == "Admin" || (ViewData["Coll"] as Collection).Login == Convert.ToString(ViewData["UserLogin"]))
+        {
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <button type="submit" style="background: #40736E; color: snow; font-weight: bold;" class="btn w-25 mb-2" asp-controller="Home" asp-action="SaveCollInfo" asp-route-CollId="@((ViewData["Coll"] as Collection).Id)" asp-route-login="@ViewData["UserLogin"]" formmethod="post">Save</button>
+                        <button type="submit" style="background: #40736E; color: snow; font-weight: bold;" class="btn w-25 mb-2 ml-5" asp-controller="Home" asp-action="DeleteCollInfo" asp-route-CollId="@((ViewData["Coll"] as Collection).Id)" asp-route-login="@ViewData["UserLogin"]" formmethod="post">Delete</button>
+                    </div>
+                    <div class="col">
+                        
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="col w-100" id="CpllectionDiv">
+                    <div class="container">
+                        <div class="row">
+                            @if (ViewData["Item"] as List<Item> != null)
+                                @foreach (var a in ViewData["Item"] as List<Item>)
+                                {
+                                    <div class="col">
+                                        <div class="card mb-2" style="width: 18rem; background: linear-gradient(to right, #082040, #40736E); cursor: pointer;">
+                                            <button type="submit" style="border: 0px; background: transparent; outline: none;" class="w-100 h-100 p-0" asp-controller="Home" asp-action="ItemInfo" asp-route-a="@a.Id" asp-route-login="@ViewData["UserLogin"]" formmethod="post">
+
+                                                @{
+                                                    imgSrc = null;
+                                                    if (a.Pic != null)
+                                                    {
+                                                        var base64 = Convert.ToBase64String(a.Pic);
+                                                        imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
+                                                    }
+                                                }
+                                                @if (imgSrc != null)
+                                                {
+                                                    <img class="h-100 w-100" src="@imgSrc" />
+                                                }
+                                                else
+                                                {
+                                                    <img class="h-100 w-100" src="~/Images/none.jpg" />
+                                                }
+                                                <div class="card-body p-1">
+                                                    <p class="card-text" style="color: #F2EFEB; font-size: 20px;">@a.Name</p>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </div>
+                                }
+                        </div>
+                    </div>
+                </div>
+            </div>
+                    @if (Convert.ToString(ViewData["UserStatus"]) == "Admin" || (ViewData["Coll"] as Collection).Login == Convert.ToString(ViewData["UserLogin"]))
+                    {
+        <div class="col-sm-4 w-100" style="color: snow;">
+            <div style="background-color: #082040; font-size: 18px; color: snow;" class="mt-2 mb-3 font-weight-bolder text-center">Add Item</div>
+            <input type="text" asp-for="Name" placeholder="Name" maxlength="50" style="display: block; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 mx-auto text-center" />
+            <input type="text" asp-for="Tegs" placeholder="Tags" maxlength="50" style="display: block; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 mx-auto text-center" />
+            <input name="uploadFile" type="file" style="background: #0F2859; color: snow;" class="mb-2 w-100" accept=".jpg, .jpeg, .png">
+            @if ((ViewData["Coll"] as Collection).Float1 != null)
+            {
+                <label class="w-100 text-center">@((ViewData["Coll"] as Collection).Float1)</label>
+                <input type="number" style="display: block; background: #0F2859; color:snow; border: 0px; border-radius: 5px;" class="mb-2 mx-auto text-center" placeholder="Flaot..." asp-for="Float1">
+            }
+            @if ((ViewData["Coll"] as Collection).Float2 != null)
+            {
+                <label class="w-100 text-center">@((ViewData["Coll"] as Collection).Float2)</label>
+                <input type="number" style="display: block; background: #0F2859; color: snow; border: 0px; border-radius: 5px; " class="mb-2 mx-auto text-center" placeholder="Float..." asp-for="Float2">
+            }
+            @if ((ViewData["Coll"] as Collection).Float3 != null)
+            {
+                <label class="w-100 text-center">@((ViewData["Coll"] as Collection).Float3)</label>
+                <input type="number" style="display: block; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 mx-auto text-center" placeholder="Flaot..." asp-for="Float3">
+            }
+
+            @if ((ViewData["Coll"] as Collection).Line1 != null)
+            {
+                <label class="w-100 text-center">@((ViewData["Coll"] as Collection).Line1)</label>
+                <input type="number" style="display: block; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 mx-auto text-center" placeholder="Line..." asp-for="Line1">
+            }
+            @if ((ViewData["Coll"] as Collection).Line2 != null)
+            {
+                <label class="w-100 text-center">@((ViewData["Coll"] as Collection).Line2)</label>
+                <input type="number" style="display: block; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 mx-auto text-center" placeholder="Line..." asp-for="Line2">
+            }
+            @if ((ViewData["Coll"] as Collection).Line3 != null)
+            {
+                <label class="w-100 text-center">@((ViewData["Coll"] as Collection).Line3)</label>
+                <input type="number" style="display: block; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 mx-auto text-center" placeholder="Line..." asp-for="Line3">
+            }
+
+            @if ((ViewData["Coll"] as Collection).Text1 != null)
+            {
+                <label class="w-100 text-center">@((ViewData["Coll"] as Collection).Text1)</label>
+                <input type="number" style="display: block; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 mx-auto text-center" placeholder="Text..." asp-for="Text1">
+            }
+            @if ((ViewData["Coll"] as Collection).Text2 != null)
+            {
+                <label class="w-100 text-center">@((ViewData["Coll"] as Collection).Text2)</label>
+                <input type="number" style="display: block; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 mx-auto text-center" placeholder="Text..." asp-for="Text2">
+            }
+            @if ((ViewData["Coll"] as Collection).Text3 != null)
+            {
+                <label class="w-100 text-center">@((ViewData["Coll"] as Collection).Text3)</label>
+                <input type="number" style="display: block; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 mx-auto text-center" placeholder="Text..." asp-for="Text3">
+            }
+
+            @if ((ViewData["Coll"] as Collection).Date1 != null)
+            {
+                <label class="w-100 text-center">@((ViewData["Coll"] as Collection).Date1)</label>
+                <input type="date" style="display: block; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 mx-auto text-center" placeholder="@DateTime.Now" asp-for="Date1">
+            }
+            @if ((ViewData["Coll"] as Collection).Date2 != null)
+            {
+                <label class="w-100 text-center">@((ViewData["Coll"] as Collection).Date2)</label>
+                <input type="date" style="display: block; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 mx-auto text-center" placeholder="@DateTime.Now" asp-for="Date2">
+            }
+            @if ((ViewData["Coll"] as Collection).Date3 != null)
+            {
+                <label class="w-100 text-center">@((ViewData["Coll"] as Collection).Date3)</label>
+                <input type="date" style="display: block; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 mx-auto text-center" placeholder="@DateTime.Now" asp-for="Date3">
+            }
+
+            @if ((ViewData["Coll"] as Collection).Checkbox1 != null)
+            {
+                <label class="w-100 text-center">@((ViewData["Coll"] as Collection).Checkbox1)</label>
+                <input type="checkbox" class="mb-2 w-100 m-auto" value="1" name="chackboxes">
+            }
+            @if ((ViewData["Coll"] as Collection).Checkbox2 != null)
+            {
+                <label class="w-100 text-center">@((ViewData["Coll"] as Collection).Checkbox2)</label>
+                <input type="checkbox" class="mb-2 w-100 m-auto" value="2" name="chackboxes">
+            }
+            @if ((ViewData["Coll"] as Collection).Checkbox3 != null)
+            {
+                <label class="w-100 text-center">@((ViewData["Coll"] as Collection).Checkbox3)</label>
+                <input type="checkbox" class="w-100 m-auto" value="3" name="chackboxes">
+            }
+            <div asp-validation-summary="All" class="" style="color:snow"></div>
+            <button type="submit" style="background: #40736E; color: snow; font-weight: bold;" class="btn w-100" asp-controller="Home" asp-action="CreateItem" asp-route-CollId="@((ViewData["Coll"] as Collection).Id)" asp-route-login="@ViewData["UserLogin"]" formmethod="post">Add</button>
+        </div>
+                    }
+                </div>
+</form>

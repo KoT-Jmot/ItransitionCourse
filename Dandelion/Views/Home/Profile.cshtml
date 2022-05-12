@@ -1,0 +1,151 @@
+﻿@using Dandelion.Data
+@model Collection
+<form class="w-100 text-xs-center" enctype="multipart/form-data">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="col w-100" id="CpllectionDiv">
+                    <div class="container">
+                        <div style="background-color: #082040; font-size: 18px; color: snow;" class="mt-2 mb-3 font-weight-bolder text-center">Your collection</div>
+                        @if (ViewData["Collect"] as List<Collection> != null)
+                            @foreach (var a in ViewData["Collect"] as List<Collection>)
+                            {
+                                <button type="submit" style="background: transparent; outline: none; cursor: pointer; border:0px;" class="w-100 p-0 mx-auto mb-2" asp-controller="Home" asp-action="Items" asp-route-a="@a.Id" asp-route-login="@ViewData["UserLogin"]" formmethod="post">
+                                    <div class="row w-100 p-0 mx-auto" style="background: linear-gradient(to right, #082040, #40736E); font-size: 16px; border-radius: 5px;">
+                                        @{
+                                            string imgSrc = null;
+                                            if (a.Pic != null)
+                                            {
+                                                var base64 = Convert.ToBase64String(a.Pic);
+                                                imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
+                                            }
+                                        }
+                                        <div class="col-sm-4 m-0 p-0">
+                                            @if (imgSrc != null)
+                                            {
+                                                <img style="border-radius: 5px;" class="w-100 h-100" src="@imgSrc" alt="No Photo" />
+                                            }
+                                            else
+                                            {
+                                                <img style="border-radius: 5px;" class="w-100 h-100" src="~/Images/none.jpg" />
+                                            }
+                                        </div>
+                                        <div class="col-sm-8" style="text-align:left;">
+                                            <p class="font-weight-bold" style="font-size: 20px; color: snow;">@a.Name</p>
+                                            <p style="overflow-wrap: break-word; width: 100%; color: snow;">@a.Description <div class="text-right" style="color: #80F2E7;">#@a.Tag</div></p>
+                                        </div>
+                                    </div>
+                                </button>
+                            }
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div style="background-color: #082040; font-size: 18px; color: snow;" class="mt-2 mb-3 font-weight-bolder text-center">Add collection</div>
+                @if (Convert.ToString(ViewData["UserStatus"]) == "Admin")
+                {
+                    <input type="text" asp-for="Login" value="@ViewData["UserLogin"]" style="background: #0F2859; color: snow; border: 0px; border-radius: 5px; text-align: center;" class="mb-2 w-100">
+                }
+                else
+                {
+                    <input type="text" asp-for="Login" value="@ViewData["UserLogin"]" readonly style="background: #0F2859; color: snow; border: 0px; border-radius: 5px; text-align: center;" class="mb-2 w-100">
+                }
+                <input type="text" asp-for="Name" placeholder="Name" maxlength="50" style="background: #0F2859; color: snow; border: 0px; border-radius: 5px; text-align: center;" class="mb-2 w-100" />
+                <textarea asp-for="Description" placeholder="Description" maxlength="150" style="background: #0F2859; color: snow; border: 0px; border-radius: 5px; text-align: center;" class="mb-2 w-100" /></textarea>
+                <select class="form-select mb-2 w-100" style="background: #0F2859; color: snow; border: 0px; border-radius: 5px; text-align: center;" asp-for="Tag">
+                    <option selected>Other</option>
+                    <option value="Alcohol">Alcohol</option>
+                    <option value="Food">Food</option>
+                    <option value="Literature">Literature</option>
+                    <option value="Art">Art</option>
+                    <option value="Music">Music</option>
+                    <option value="Sport">Sport</option>
+                    <option value="Technics">Technics</option>
+                    <option value="Transport">Transport</option>
+                </select>
+                <input name="uploadFile" type="file" style="background: #0F2859; color: snow;" class="mb-2 w-100" accept=".jpg, .jpeg, .png">
+                <div class="row">
+                    <div class="col">
+                        <input type="text" asp-for="Float1" maxlength="30" id="f1" style="display: none; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 w-100 mx-auto text-center" placeholder="Enter name of float" />
+                        <input type="text" asp-for="Float2" maxlength="30" id="f2" style="display: none; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 w-100 mx-auto text-center" placeholder="Enter name of float" />
+                        <input type="text" asp-for="Float3" maxlength="30" id="f3" style="display: none; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 w-100 mx-auto text-center" placeholder="Enter name of float" />
+                        <input type="button" class="btn btn-dark mb-2 mx-auto" onClick="AddFloat('f')" id="ButtonFloat" style="display:block;" value="Add float field" />
+                    </div>
+                    <div class="col">
+                        <input type="text" asp-for="Line1" maxlength="30" id="l1" style="display: none; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 w-100 mx-auto text-center" placeholder="Enter name of line" />
+                        <input type="text" asp-for="Line2" maxlength="30" id="l2" style="display: none; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 w-100 mx-auto text-center" placeholder="Enter name of line" />
+                        <input type="text" asp-for="Line3" maxlength="30" id="l3" style="display: none; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 w-100 mx-auto text-center" placeholder="Enter name of line" />
+                        <input type="button" class="btn btn-dark mb-2 mx-auto" onClick="AddFloat('l')" id="ButtonLine" style="display:block;" value="Add line field" />
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        <input type="text" asp-for="Text1" maxlength="30" id="t1" style="display: none; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 w-100 mx-auto text-center" placeholder="Enter name of text" />
+                        <input type="text" asp-for="Text2" maxlength="30" id="t2" style="display: none; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 w-100 mx-auto text-center" placeholder="Enter name of text" />
+                        <input type="text" asp-for="Text3" maxlength="30" id="t3" style="display: none; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 w-100 mx-auto text-center" placeholder="Enter name of text" />
+                        <input type="button" class="btn btn-dark mb-2 mx-auto" onClick="AddFloat('t')" id="ButtonText" style="display:block;" value="Add text field" />
+                    </div>
+                    <div class="col">
+                        <input type="text" asp-for="Date1" maxlength="30" id="d1" style="display: none; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 w-100 mx-auto text-center" placeholder="Enter name of date" />
+                        <input type="text" asp-for="Date2" maxlength="30" id="d2" style="display: none; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 w-100 mx-auto text-center" placeholder="Enter name of date" />
+                        <input type="text" asp-for="Date3" maxlength="30" id="d3" style="display: none; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 w-100 mx-auto text-center" placeholder="Enter name of date" />
+                        <input type="button" class="btn btn-dark mb-2 mx-auto" onClick="AddFloat('d')" id="ButtonDate" style="display:block;" value="Add date field" />
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        <input type="text" asp-for="Checkbox1" maxlength="30" id="c1" style="display: none; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 mx-auto text-center" placeholder="Enter name of checkbox" />
+                        <input type="text" asp-for="Checkbox2" maxlength="30" id="c2" style="display: none; background: #0F2859; color: snow; border: 0px; border-radius: 5px;" class="mb-2 mx-auto text-center" placeholder="Enter name of checkbox" />
+                        <input type="text" asp-for="Checkbox3" maxlength="30" id="c3" style="display: none; background: #0F2859; color:snow; border: 0px; border-radius: 5px;" class="mb-2 mx-auto text-center" placeholder="Enter name of checkbox" />
+                        <input type="button" class="btn btn-dark mb-2 mx-auto" onClick="AddFloat('c')" id="ButtonCheckbox" style="display:block;" value="Add checkBox field" />
+                    </div>
+                    <div class="w-100"></div>
+                    <div asp-validation-summary="All" class="" style="color:snow"></div>
+                    <div class="w-100"></div>
+                    <button type="submit" style="background: #40736E; color: snow; font-weight: bold;" class="btn mx-auto w-50" asp-controller="Home" asp-action="CreateCollection" asp-route-login="@ViewData["UserLogin"]" formmethod="post">Create</button>
+
+                </div>
+            </div>
+    </div>
+</form>
+<script>
+    var Float = 1;
+    var Line = 1;
+    var Text = 1;
+    var Date = 1;
+    var Chackbox = 1;
+    function AddFloat(n) {
+        switch (n) {
+
+            case "f":
+                document.getElementById(n + Float).style.display = "block";
+                Float++;
+                if (Float > 3)
+                    document.getElementById("ButtonFloat").style.display = "none";
+                break;
+            case "l":
+                document.getElementById(n + Line).style.display = "block";
+                Line++;
+                if (Line > 3)
+                    document.getElementById("ButtonLine").style.display = "none";
+                break;
+            case "t":
+                document.getElementById(n + Text).style.display = "block";
+                Text++;
+                if (Text > 3)
+                    document.getElementById("ButtonText").style.display = "none";
+                break;
+            case "d":
+                document.getElementById(n + Date).style.display = "block";
+                Date++;
+                if (Date > 3)
+                    document.getElementById("ButtonDate").style.display = "none";
+                break;
+            case "c":
+                document.getElementById(n + Chackbox).style.display = "block";
+                Chackbox++;
+                if (Chackbox > 3)
+                    document.getElementById("ButtonCheckbox").style.display = "none";
+                break;
+        }
+
+    }
+</script>
